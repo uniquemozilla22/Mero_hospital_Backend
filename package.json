@@ -1,0 +1,20 @@
+{
+  "name": "Mero_hospital_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "server":"nodemon index.js",
+    "start": "concurrently \"npm run server\" \"cd frontend && expo start --android\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7",
+    "nodemon": "^2.0.7"
+  }
+}
