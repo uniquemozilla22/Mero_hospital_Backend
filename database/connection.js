@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
 const URI = require("./databaseUser/UserBase.js").mongooseURI;
 
-const connection = mongoose
-  .connect(URI, {
+const connection =async (mongoose) =>
+{
+  return await mongoose.connect(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -12,5 +12,7 @@ const connection = mongoose
   .catch((err) => {
     console.log("Error:" + err);
   });
+}
+
 
 module.exports = connection;
