@@ -1,10 +1,8 @@
 const register = require("./register/register")
-const routes =(app)=>{
 
-    // for regitering the User in the application
-    app.get("/register",register)
-
+// for regitering the User in the application
+const router =(router)=>{
+    router.post("/register",register)
 }
 
-
-module.exports=routes
+module.exports=router

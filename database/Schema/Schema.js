@@ -1,11 +1,7 @@
 
-const Schema =({mongoose})=>{
 
-    require("./User/user.js")(mongoose)
 
-}
-
-module.exports=Schema
+module.exports={UserModel:require("./User/user.js")}
 
 
 
