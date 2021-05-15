@@ -3,21 +3,32 @@ const bcrypt = require("bcryptjs");
 
 const register =async (req,res)=>{
 
-    let {username,password,email} = req.body
+    let {username,password,email,name} = req.body
+    let isDoctor =false
 
+    const check_user = UserModel.findOne({username})|| UserModel.findOne({email})
 
-    const user = new UserModel({username,password,email })
+    if(check_user)
+    {
+        res.end('User already exists with that username or email ! Login with the username')
+    }
+    else{
 
-    // generate salt to hash password
-    const salt = await bcrypt.genSalt(10);
-    // now we set user password to hashed password
-    user.password = await bcrypt.hash(user.password, salt);
+        const user = new UserModel({username,password,email ,name, isDoctor })
 
-    user.save()
-    .then(()=>{
-    res.status(200).end('Registration successfull ! Now you can login')
-    })
-    .catch(err=>{res.end(err)})
+        // generate salt to hash password
+        const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+        user.password = await bcrypt.hash(user.password, salt);
+    
+        user.save()
+        .then(()=>{
+        res.status(200).end('Registration successfull ! Now you can login')
+        })
+        .catch(err=>{res.end(err)})
+
+    }
+
 }
 
 module.exports = register
