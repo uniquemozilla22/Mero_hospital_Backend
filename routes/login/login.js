@@ -43,22 +43,29 @@ const login = async (req,res)=>{
 
 
 const user_data=async (req,res)=>{
-    
-    try{
-        const user_datas = UserModel.findOne({id:req.userid})
-
-        if(user_datas)
-        {
-            res.status(200).json({user_datas})
-        }
-        else{
-            res.status(404).json({error:"Data not Found ! Login again"})
-        }
-    }
-    catch(e){
-        res.status(500).json({error:e})
-    }
+     UserModel.findById(req.user.id)
+        .then(user=>{
+            res.json(user)
+        })
+        .catch(e=>{
+            res.status(404).json({error:"Data not Found ! Login again: "+ e})
+        })
    
 }
 
-module.exports={login, user_data}
+
+const logout= (req,res)=>{
+    jwt.destroy(req.params.token)
+    .then(()=>{
+        req.destroy();
+        res.json({success:"The user has logged out"})
+    })
+    .catch(err=>{
+        res.json({error:"Error While logging out the system."})
+    })
+    console.log(req.params.token)
+
+}
+
+
+module.exports={login, user_data,logout}

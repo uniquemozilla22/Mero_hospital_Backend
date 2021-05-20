@@ -17,7 +17,11 @@ const UserSchema =  new mongoose.Schema({
         type: Boolean,
         requrired: true,
     },
-    contact:{
+    DoctorCategory:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "category_doctor",
+    },
+    address:{
         type: String,
         requrired: false,
     },
@@ -28,8 +32,7 @@ const UserSchema =  new mongoose.Schema({
     username:{
         type: String,
         requrired: true,
-    }
-
+    },
 })
 
 module.exports = mongoose.model("user",UserSchema)
