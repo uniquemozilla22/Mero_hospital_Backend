@@ -68,4 +68,24 @@ const logout= (req,res)=>{
 }
 
 
-module.exports={login, user_data,logout}
+const updateUser =(req,res)=>{
+    const {name , email } = req.body.data
+            UserModel.updateOne({_id:req.user.id},{$set:{name, email}})
+            .then((user)=>{
+                UserModel.findOne({_id:req.user.id})
+                .then((user)=>{
+                    res.send({success:"The data has been updated"})
+                })
+            })
+            .catch(error=>{
+                res.send({success:"Server Error! Data not updated"})
+
+            })
+        
+
+            
+      
+}
+
+
+module.exports={login, user_data,logout,updateUser}
