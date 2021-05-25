@@ -78,7 +78,7 @@ const updateUser =(req,res)=>{
                 })
             })
             .catch(error=>{
-                res.send({success:"Server Error! Data not updated"})
+                res.send({error:"Server Error! Data not updated"})
 
             })
         
