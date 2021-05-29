@@ -1,34 +1,37 @@
-const {UserModel} = require('../../database/Schema/Schema')
+const { UserModel } = require("../../database/Schema/Schema");
 const bcrypt = require("bcryptjs");
 
-const register =async (req,res)=>{
+const register = async (req, res) => {
+  let { username, password, email, name } = req.body;
+  let isDoctor = false;
+  let check_user = false;
+  UserModel.findOne({ username })
+    .then((user) => {
+      check_user = true;
+    })
+    .catch((err) => {
+      res.end("Server Error" + err);
+    });
 
-    let {username,password,email,name} = req.body
-    let isDoctor =false
+  if (check_user) {
+    res.end("User already exists with that username! Login with the username");
+  } else {
+    const user = new UserModel({ username, password, email, name, isDoctor });
 
-    const check_user = UserModel.findOne({username})|| UserModel.findOne({email})
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(10);
+    // now we set user password to hashed password
+    user.password = await bcrypt.hash(user.password, salt);
 
-    if(check_user)
-    {
-        res.end('User already exists with that username or email ! Login with the username')
-    }
-    else{
+    user
+      .save()
+      .then(() => {
+        res.status(200).end("Registration successfull ! Now you can login");
+      })
+      .catch((err) => {
+        res.end(err);
+      });
+  }
+};
 
-        const user = new UserModel({username,password,email ,name, isDoctor })
-
-        // generate salt to hash password
-        const salt = await bcrypt.genSalt(10);
-        // now we set user password to hashed password
-        user.password = await bcrypt.hash(user.password, salt);
-    
-        user.save()
-        .then(()=>{
-        res.status(200).end('Registration successfull ! Now you can login')
-        })
-        .catch(err=>{res.end(err)})
-
-    }
-
-}
-
-module.exports = register
+module.exports = register;
