@@ -33,6 +33,7 @@ const UserSchema =  new mongoose.Schema({
         type: String,
         requrired: true,
     },
+    MessageRooms:[mongoose.Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model("user",UserSchema)

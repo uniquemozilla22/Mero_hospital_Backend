@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
 const MessageModel = new mongoose.Schema({
-  from: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+  room:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"chatroom"
   },
-  to: {
+  by: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    ref: 'user',
   },
   message: {
     type: String,

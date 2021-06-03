@@ -4,4 +4,6 @@ module.exports = {
   CategoryDoctor: require("./doctorCategory/category_doctor.js"),
   Appointments: require("./appointments/Appointment.js"),
   Doctor: require("./doctor/DoctorInfo.js"),
+  ChatRoom: require ("./room/ChatRoom.js"),
+  Messages:require("./Messages/Messages.js")
 };

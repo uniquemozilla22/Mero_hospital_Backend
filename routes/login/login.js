@@ -10,6 +10,7 @@ const login = async (req,res)=>{
         error:{username:null,password:null}
     }
     const {username , password } = req.body
+    console.log(username+" || "+password)
 
     const user = await UserModel.findOne({username: username})
     if(user)
@@ -22,7 +23,7 @@ const login = async (req,res)=>{
             message.error.password=null
             message.error.username=null
 
-            const token = jwt.sign({email:user.email, id : user._id, isDoctor:user.isDoctor},'test',{expiresIn:'1h'})
+            const token = jwt.sign({email:user.email, id : user._id, isDoctor:user.isDoctor,MessageRooms:user.MessageRooms},'test',{expiresIn:'1h'})
 
             message.success={result:user,token}
             res.json(message)
