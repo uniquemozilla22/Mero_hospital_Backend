@@ -5,7 +5,7 @@ const MessageModel = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:"chatroom"
   },
-  by: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },

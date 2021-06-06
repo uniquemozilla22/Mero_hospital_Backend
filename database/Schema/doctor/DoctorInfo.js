@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const Doctorinfo = mongoose.Schema({
-  feild: {
-    type: mongoose.Schema.Types.ObjectID,
-    ref: "category_doctor",
-  },
   experience: {
     type: String,
     required: true,

@@ -6,7 +6,7 @@ const ChatRoom = new mongoose.Schema({
         type: String,
         required:true,
     },
-    participants:[mongoose.Schema.Types.ObjectID]
+    participants:[{type:mongoose.Schema.Types.ObjectID,ref:"user"}]
 })
 
 module.exports =mongoose.model('chatroom',ChatRoom)
