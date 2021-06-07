@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser")
+const Pusher =require("pusher")
 
 
 // using the middlewares
@@ -13,8 +14,11 @@ app.use(bodyParser.json())
 app.use("/",router)
 
 
+
 // Connection with the database
-const db = require("./database/connection.js")(mongoose);
+require("./database/connection.js")(mongoose);
+
+
 
 
 // routes for the application
