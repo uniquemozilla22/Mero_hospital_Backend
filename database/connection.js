@@ -28,7 +28,7 @@ const connection = (mongoose) => {
               user: {
                 _id: user._id,
                 name: user.name,
-                avatar: user.DoctorId?.image,
+                avatar: user.DoctorId ? user.DoctorId.image : null,
               },
             };
             Pusher.trigger("messages", "inserted", {
@@ -38,8 +38,6 @@ const connection = (mongoose) => {
           .catch((error) => {
             console.log("database Message User error");
           });
-
-        
       }
     });
   });
