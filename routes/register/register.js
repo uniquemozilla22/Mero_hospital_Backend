@@ -2,7 +2,7 @@ const { UserModel } = require("../../database/Schema/Schema");
 const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
-  let { username, password, email, name } = req.body;
+  let { username, password, email, name, phone, address } = req.body;
   let isDoctor = false;
   let check_user = false;
   UserModel.findOne({ username })
@@ -16,7 +16,16 @@ const register = async (req, res) => {
   if (check_user) {
     res.end("User already exists with that username! Login with the username");
   } else {
-    const user = new UserModel({ username, password, email, name, isDoctor });
+    const user = new UserModel({
+      username,
+      password,
+      email,
+      name,
+      isDoctor,
+      MessageRooms: [],
+      phone,
+      address,
+    });
 
     // generate salt to hash password
     const salt = await bcrypt.genSalt(10);

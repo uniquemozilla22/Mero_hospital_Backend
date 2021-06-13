@@ -1,6 +1,7 @@
 const register = require("./register/register.js");
 const { login, user_data, logout, updateUser } = require("./login/login.js");
 const auth = require("../services/middleware/authmiddileware.js");
+const adminauth = require("../services/middleware/adminauth.js");
 const categories = require("./categoryDoctor/categoryDoctor.js");
 const {
   AppointmentPost,
@@ -14,6 +15,10 @@ const { postMesssage, getMessages } = require("./chat/messages/messages.js");
 
 // for regitering the User in the application
 const routes = (router) => {
+  // For admin
+  router.get("/appointmentsall:token", adminauth, UserAllAppointment);
+
+  // For User and Doctor
   router.post("/register", register);
   router.post("/login", login);
   router.get("/user_data:token", auth, user_data);

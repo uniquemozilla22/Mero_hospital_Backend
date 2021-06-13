@@ -44,6 +44,7 @@ const login = async (req, res) => {
 const user_data = async (req, res) => {
   UserModel.findById(req.user.id)
     .select("-password")
+    .populate("DoctorId")
     .populate({
       path: "MessageRooms",
       populate: {
