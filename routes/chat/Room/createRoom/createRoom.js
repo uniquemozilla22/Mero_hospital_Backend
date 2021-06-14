@@ -6,7 +6,7 @@ const createRoom = (req, res) => {
   let issucessdoctor = new Boolean();
 
   const participants = [req.user.id, req.body.doctorId];
-  const name = "Chat1";
+  const name = req.body.title;
 
   ChatRoom.find({ participants: participants }).then((chatroom) => {
     if (!chatroom[0]) {
