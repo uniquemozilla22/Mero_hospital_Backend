@@ -8,37 +8,39 @@ const login = async (req, res) => {
     error: { username: null, password: null },
   };
   const { username, password } = req.body;
-  const user = await UserModel.findOne({ username: username });
-  if (user) {
-    const validPassword = await bcrypt.compare(password, user.password);
+  await UserModel.findOne({ username: username })
+    .then((user) => {
+      if (user) {
+        const validPassword = bcrypt.compare(password, user.password);
+        if (validPassword) {
+          message.error.password = null;
+          message.error.username = null;
+          const token = jwt.sign(
+            {
+              email: user.email,
+              id: user._id,
+              isAdmin: user.isAdmin ? true : false,
+              isDoctor: user.isDoctor,
+              MessageRooms: user.MessageRooms,
+            },
+            "test",
+            { expiresIn: "1h" }
+          );
 
-    if (validPassword) {
-      message.error.password = null;
-      message.error.username = null;
-
-      const token = jwt.sign(
-        {
-          email: user.email,
-          id: user._id,
-          isDoctor: user.isDoctor,
-          MessageRooms: user.MessageRooms,
-        },
-        "test",
-        { expiresIn: "1h" }
-      );
-
-      message.success = { result: user, token };
-      res.json(message);
-    } else {
-      message.error.username = null;
-      message.error.password = "Invalid Password";
-      res.json(message);
-    }
-  } else {
-    message.error.username = "Invalid Username";
-    message.error.password = null;
-    res.json(message);
-  }
+          message.success = { result: user, token };
+          res.json(message);
+        } else {
+          message.error.username = null;
+          message.error.password = "Invalid Password";
+          res.json(message);
+        }
+      } else {
+        message.error.username = "Invalid Username";
+        message.error.password = null;
+        res.json(message);
+      }
+    })
+    .catch((err) => console.log(err));
 };
 
 const user_data = async (req, res) => {
