@@ -14,4 +14,16 @@ const appointments_all = (req, res) => {
     });
 };
 
-module.exports = appointments_all;
+const appointment_all_admin = (req, res) => {
+  Appointments.find()
+    .populate("feild")
+    .populate("user")
+    .then((appointments) => {
+      res.send(appointments);
+    })
+    .catch((error) =>
+      res.sendStatus(403).send("Error While fetching appointments")
+    );
+};
+
+module.exports = { appointments_all, appointment_all_admin };

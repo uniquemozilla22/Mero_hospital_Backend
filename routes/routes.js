@@ -8,28 +8,26 @@ const {
   UserAllAppointment,
   UserFeildAppointment,
   DeleteAppointment,
+  AdminAllAppointment,
 } = require("./appointments/appointment.js");
 const { createRoom, fetchRoom, fetchList } = require("./chat/Room/room.js");
-const {
-  UserModel,
-  Messages,
-  Appointments,
-} = require("../database/Schema/Schema.js");
+const { UserModel } = require("../database/Schema/Schema.js");
 const { postMesssage, getMessages } = require("./chat/messages/messages.js");
 
 // for regitering the User in the application
 const routes = (router) => {
   // For admin
-  router.get("/appointmentsall:token", adminauth, (req, res) => {
-    Appointments.find()
-      .populate("feild")
-      .populate("user")
-      .then((appointments) => {
-        res.send(appointments);
+  router.get("/appointmentsall:token", adminauth, AdminAllAppointment);
+  router.get("/doctorall:token", adminauth, (req, res) => {
+    UserModel.find({ isDoctor: true })
+      .populate("DoctorId categoryId MessageRooms")
+      .select("-password")
+      .then((doctors) => {
+        res.send(doctors);
       })
-      .catch((error) =>
-        res.sendStatus(403).send("Error While fetching appointments")
-      );
+      .catch((err) => {
+        res.status(403).send({ error: err });
+      });
   });
 
   // For User and Doctor
