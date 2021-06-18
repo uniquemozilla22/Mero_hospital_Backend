@@ -11,8 +11,9 @@ const {
   AdminAllAppointment,
 } = require("./appointments/appointment.js");
 const { createRoom, fetchRoom, fetchList } = require("./chat/Room/room.js");
-const { UserModel } = require("../database/Schema/Schema.js");
+const { UserModel, CategoryDoctor } = require("../database/Schema/Schema.js");
 const { postMesssage, getMessages } = require("./chat/messages/messages.js");
+const DoctorInfo = require("../database/Schema/doctor/DoctorInfo.js");
 
 // for regitering the User in the application
 const routes = (router) => {
@@ -27,6 +28,62 @@ const routes = (router) => {
       })
       .catch((err) => {
         res.status(403).send({ error: err });
+      });
+  });
+  router.post("/addcategories:token", adminauth, (req, res) => {
+    const { name, image, description } = req.body;
+    const category = new CategoryDoctor({ name, image, description });
+
+    category
+      .save()
+      .then((category) => {
+        res.status(200).end("success");
+      })
+      .catch((err) => {
+        res.status(200).send("Error: " + err);
+      });
+  });
+  router.post("/adddoctor:token", adminauth, (req, res) => {
+    const {
+      categoryId,
+      name,
+      phone,
+      email,
+      city,
+      username,
+      password,
+      image,
+      degree,
+      experience,
+    } = req.body.doctorData;
+
+    const Doctor = new DoctorInfo({ experience, degree, image });
+
+    Doctor.save()
+      .then((doc) => {
+        const userDoctor = new UserModel({
+          categoryId,
+          name,
+          phone,
+          email,
+          isDoctor: true,
+          DoctorId: doc.id,
+          address: city,
+          username,
+          password,
+        });
+
+        userDoctor
+          .save()
+          .then((userDoctor) => {
+            res.send("success");
+          })
+          .catch((err) => {
+            res.send("error");
+          });
+      })
+      .catch((err) => {
+        res.send("error");
       });
   });
 
@@ -46,30 +103,6 @@ const routes = (router) => {
   router.get("/fetchdoctor:categoryId", fetchList);
   router.post("/newmessage:token", auth, postMesssage);
   router.get("/getmessage:room", getMessages);
-  router.get("/adddoctor", (req, res) => {
-    const doctor_details = {
-      name: "Deepak Karki",
-      email: "deepakkarki@gmail.com",
-      phone: "9813135616",
-      isDoctor: true,
-      DoctorId: "60af9d519ced5222380740df",
-      categoryId: "609fc37a3482902feac0f1a6",
-      address: "Biratnagar",
-      password: "deepakkarki12",
-      username: "deepakkarki12",
-    };
-
-    const doctor = new UserModel({ ...doctor_details });
-
-    doctor
-      .save()
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((error) => {
-        res.send(error);
-      });
-  });
 };
 
 module.exports = routes;
