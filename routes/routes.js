@@ -87,6 +87,29 @@ const routes = (router) => {
       });
   });
 
+  router.post("/edit_category:token", adminauth, (req, res) => {
+    const { name, description, image, _id } = req.body;
+    CategoryDoctor.updateOne({ _id }, { $set: { name, description, image } })
+      .then((cate) => {
+        res.send("success");
+      })
+      .catch((err) => {
+        res.send("error");
+      });
+  });
+
+  router.post("/delete_category:token", adminauth, (req, res) => {
+    const { _id } = req.body;
+
+    CategoryDoctor.deleteOne({ _id })
+      .then((sucess) => {
+        res.send("success");
+      })
+      .catch((err) => {
+        res.send("error");
+      });
+  });
+
   // For User and Doctor
   router.post("/register", register);
   router.post("/login", login);
