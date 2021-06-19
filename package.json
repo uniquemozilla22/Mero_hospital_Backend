@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "",
+    "start": "nodemon index.js",
     "server": "nodemon index.js",
     "start": "concurrently \"npm run server\" \"cd ../Mero_Hospital && expo start --android\""
   },
