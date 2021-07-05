@@ -14,7 +14,7 @@ const { createRoom, fetchRoom, fetchList } = require("./chat/Room/room.js");
 const { postMesssage, getMessages } = require("./chat/messages/messages.js");
 const AddDoctor = require("./Doctor/AddDoctor.js");
 const fetchDoctor = require("./Doctor/fetchDoctor.js");
-
+const forgetpassword = require("../services/forgetpassword/forgetpassword.js");
 // for regitering the User in the application
 const routes = (router) => {
   // For admin
@@ -28,6 +28,7 @@ const routes = (router) => {
   // For User and Doctor
   router.post("/register", register);
   router.post("/login", login);
+  router.post("/forgetpassword", forgetpassword);
   router.get("/user_data:token", auth, user_data);
   router.get("/logout:token", auth, logout);
   router.get("/categories", categories.categoryDoctor);
